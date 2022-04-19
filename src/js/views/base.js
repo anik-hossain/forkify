@@ -10,6 +10,8 @@ export const elements = {
   searchResPages: qSelector('.results__pages'),
   recipe: qSelector('.recipe'),
   shoppingList: qSelector('.shopping__list'),
+  likesMenu: qSelector('.likes__field'),
+  likesList: qSelector('.likes__list'),
 };
 
 export const elementStrings = {
