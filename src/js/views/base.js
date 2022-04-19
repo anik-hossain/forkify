@@ -8,6 +8,7 @@ export const elements = {
   resultList: qSelector('.results__list'),
   searchRes: qSelector('.results'),
   searchResPages: qSelector('.results__pages'),
+  recipe: qSelector('.recipe'),
 };
 
 export const elementStrings = {

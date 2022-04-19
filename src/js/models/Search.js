@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { baseUrl } from '../config';
 
 export default class {
   constructor(query) {
@@ -6,12 +7,11 @@ export default class {
   }
   async getResult() {
     try {
-      const result = await axios(
-        `https://forkify-api.herokuapp.com/api/search?q=${this.query}`
-      );
+      const result = await axios(`${baseUrl}/search?q=${this.query}`);
       this.recipes = result.data.recipes;
     } catch (e) {
       console.log(e);
+      alert('No results were found');
     }
   }
 }
