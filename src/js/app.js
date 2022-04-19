@@ -1,8 +1,10 @@
 import Search from './models/Search';
 import * as searchView from './views/searchView';
 import * as recipeView from './views/recipeView';
+import * as listView from './views/listView';
 import { clearLoader, elements, loader } from './views/base';
 import Recipe from './models/Recipe';
+import List from './models/List';
 
 /**
  * ***** Global state of the application
@@ -13,7 +15,7 @@ import Recipe from './models/Recipe';
  */
 
 const state = {};
-
+window.state = state;
 /**
  * Search Controller
  */
@@ -92,9 +94,42 @@ const RecipeController = async () => {
   }
 };
 
+// List Controller
+
+const ListController = () => {
+  // Create a new list if there is none yet
+  if (!state.list) state.list = new List();
+
+  // Add each ingredients to the list amd UI
+  state.recipe.ingredients.forEach((el) => {
+    const item = state.list.addItem(el.count, el.unit, el.ingredient);
+    listView.renderItem(item);
+  });
+};
+
 ['hashchange', 'load'].forEach((event) =>
   addEventListener(event, RecipeController)
 );
+
+// Handle delete and update list item event
+elements.shoppingList.addEventListener('click', (e) => {
+  const id = e.target.closest('.shopping__item').dataset.itemid;
+  // Handle delete item
+  if (e.target.matches('.shopping__delete, .shopping__delete *')) {
+    // Delete from state
+    state.list.deleteItem(id);
+
+    // Delete from UI
+    listView.deleteItem(id);
+  }
+  // Handle the count update
+  else if (
+    e.target.matches('.shopping__count-value, .shopping__count-value *')
+  ) {
+    const val = parseFloat(e.target.value, 10);
+    state.list.updateCount(id, val);
+  }
+});
 
 // Handling recipe button clicks
 elements.recipe.addEventListener('click', (e) => {
@@ -108,5 +143,7 @@ elements.recipe.addEventListener('click', (e) => {
     // Increase button i8s clicked
     state.recipe.updateServings('inc');
     recipeView.updateServingsIngredients(state.recipe);
+  } else if (e.target.matches('.recipe__btn--add, .recipe__btn--add *')) {
+    ListController();
   }
 });

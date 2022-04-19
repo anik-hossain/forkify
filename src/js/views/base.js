@@ -9,6 +9,7 @@ export const elements = {
   searchRes: qSelector('.results'),
   searchResPages: qSelector('.results__pages'),
   recipe: qSelector('.recipe'),
+  shoppingList: qSelector('.shopping__list'),
 };
 
 export const elementStrings = {
